@@ -4362,7 +4362,7 @@
     window.scene = scene;
 
     const mainCam = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.2, 650);
-    const mirrorCam = new THREE.PerspectiveCamera(52, 420 / 108, 0.3, 350);
+    const mirrorCam = new THREE.PerspectiveCamera(52, 420 / 108, 0.3, 95); // Optimized rear culling distance
     window.mainCam = mainCam;
 
     // Showroom Group (for Screen 1: メーカー選択 matching Screenshot 3)
@@ -10335,6 +10335,14 @@ function startStoryIntro(chapterIdx) {
 
           this.noiseSource.start();
 
+          // 4.6 Pre-cached reusable crash noise buffer (eliminates GC stutter on collision)
+          const crashBufSize = Math.floor(this.ctx.sampleRate * 0.18);
+          this.crashNoiseBuffer = this.ctx.createBuffer(1, crashBufSize, this.ctx.sampleRate);
+          const crashOut = this.crashNoiseBuffer.getChannelData(0);
+          for (let i = 0; i < crashBufSize; i++) {
+            crashOut[i] = Math.random() * 2 - 1;
+          }
+
           this.oscSub.start();
           this.oscMain.start();
           this.oscHarm.start();
@@ -10455,27 +10463,23 @@ function startStoryIntro(chapterIdx) {
         osc.start(t);
         osc.stop(t + 0.25);
 
-        // Metal grind / noise burst
-        const bufferSize = Math.floor(this.ctx.sampleRate * 0.18);
-        const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          output[i] = Math.random() * 2 - 1;
+        // Metal grind / noise burst (reusing pre-cached buffer)
+        if (this.crashNoiseBuffer) {
+          const whiteNoise = this.ctx.createBufferSource();
+          whiteNoise.buffer = this.crashNoiseBuffer;
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(1200, t);
+          filter.Q.setValueAtTime(3.0, t);
+          const ng = this.ctx.createGain();
+          ng.gain.setValueAtTime(vol * 0.7, t);
+          ng.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+          whiteNoise.connect(filter);
+          filter.connect(ng);
+          ng.connect(this.masterGain);
+          whiteNoise.start(t);
+          whiteNoise.stop(t + 0.19);
         }
-        const whiteNoise = this.ctx.createBufferSource();
-        whiteNoise.buffer = noiseBuffer;
-        const filter = this.ctx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(1200, t);
-        filter.Q.setValueAtTime(3.0, t);
-        const ng = this.ctx.createGain();
-        ng.gain.setValueAtTime(vol * 0.7, t);
-        ng.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
-        whiteNoise.connect(filter);
-        filter.connect(ng);
-        ng.connect(this.masterGain);
-        whiteNoise.start(t);
-        whiteNoise.stop(t + 0.19);
       }
 
       stop() {
@@ -10598,6 +10602,24 @@ function startStoryIntro(chapterIdx) {
       };
     }
 
+    // High-performance GC-free 2D XZ spline sampler for minimap radar & physics
+    const _tempSplinePos = { x: 0, z: 0 };
+    function sampleSplineXZ(sDist, out = _tempSplinePos) {
+      if (!trackData) return out;
+      const total = trackData.totalLength;
+      const pts = trackData.points;
+      const N = pts.length;
+      let sWrap = ((sDist % total) + total) % total;
+      const exact = (sWrap / total) * N;
+      const i0 = Math.floor(exact) % N;
+      const i1 = (i0 + 1) % N;
+      const a = exact - Math.floor(exact);
+      const p0 = pts[i0], p1 = pts[i1];
+      out.x = p0.x + (p1.x - p0.x) * a;
+      out.z = p0.z + (p1.z - p0.z) * a;
+      return out;
+    }
+
     function resetTougeRace() {
       applyChapterScenery(selectedChapterIdx);
       updateCharacterPortraits(selectedChapterIdx);
@@ -10664,10 +10686,11 @@ function startStoryIntro(chapterIdx) {
     let lastCollisionTime = 0;
     let lastCollisionType = '';
 
+    const _contactWorldPos = new THREE.Vector3();
     function getTrackWorldPos(sDist, latOffset) {
       const samp = sampleSpline(sDist);
-      if (!samp) return new THREE.Vector3();
-      return samp.pos.clone()
+      if (!samp) return _contactWorldPos.set(0, 0, 0);
+      return _contactWorldPos.copy(samp.pos)
         .addScaledVector(samp.binormal, latOffset)
         .addScaledVector(samp.normal, 0.45);
     }
@@ -10985,8 +11008,12 @@ function startStoryIntro(chapterIdx) {
       updateTougeHUD(sample, ahead);
     }
 
-    // Place Player & Rival 3D Models + Main & Rear-View Mirror Cameras
+    // Place Player & Rival 3D Models + Main & Rear-View Mirror Cameras (Pre-allocated static vectors, zero GC)
     const _f = new THREE.Vector3(), _u = new THREE.Vector3(), _r = new THREE.Vector3(), _l = new THREE.Vector3();
+    const _pPos = new THREE.Vector3(), _rPos = new THREE.Vector3();
+    const _rf = new THREE.Vector3(), _ru = new THREE.Vector3(), _rr = new THREE.Vector3(), _rl = new THREE.Vector3();
+    const _camPos = new THREE.Vector3(), _lookAt = new THREE.Vector3();
+    const _mirPos = new THREE.Vector3(), _mirLook = new THREE.Vector3();
     const _m = new THREE.Matrix4();
 
     function updateTougeTransforms(dt = 0.016) {
@@ -10994,7 +11021,7 @@ function startStoryIntro(chapterIdx) {
 
       // Player 3D Placement
       const ps = sampleSpline(battle.s);
-      const pPos = ps.pos.clone()
+      const pPos = _pPos.copy(ps.pos)
         .addScaledVector(ps.binormal, battle.lateral)
         .addScaledVector(ps.normal, 0.04);
       playerCarRoot.position.copy(pPos);
@@ -11025,16 +11052,16 @@ function startStoryIntro(chapterIdx) {
 
       // Rival 3D Placement
       const rs = sampleSpline(battle.rivalS);
-      const rPos = rs.pos.clone()
+      const rPos = _rPos.copy(rs.pos)
         .addScaledVector(rs.binormal, battle.rivalLateral)
         .addScaledVector(rs.normal, 0.04);
       rivalCarRoot.position.copy(rPos);
 
-      const rf = rs.tangent.clone().normalize();
-      const ru = rs.normal.clone().normalize();
-      const rr = new THREE.Vector3().crossVectors(rf, ru).normalize();
-      const rl = rr.clone().negate();
-      _m.makeBasis(rl, ru, rf);
+      _rf.copy(rs.tangent).normalize();
+      _ru.copy(rs.normal).normalize();
+      _rr.crossVectors(_rf, _ru).normalize();
+      _rl.copy(_rr).negate();
+      _m.makeBasis(_rl, _ru, _rf);
       rivalCarRoot.quaternion.setFromRotationMatrix(_m);
 
       if (rivalCarRoot.children[0]) {
@@ -11045,10 +11072,10 @@ function startStoryIntro(chapterIdx) {
         animateCarRig(rivalCarRoot.children[0], rSpin, rSteer, -rSteer * 0.048, rBrake ? 0.032 : -0.016, rBrake, rBackfire);
       }
 
-      // Multi-Angle Camera Perspective System (8 Dynamic Perspectives)
+      // Multi-Angle Camera Perspective System (6 Dynamic Perspectives)
       const curCamMode = CAMERA_MODES[battle.camModeIdx] || CAMERA_MODES[0];
-      const camPos = new THREE.Vector3();
-      const lookAt = new THREE.Vector3();
+      const camPos = _camPos.set(0, 0, 0);
+      const lookAt = _lookAt.set(0, 0, 0);
       playerCarRoot.visible = (curCamMode.id !== 'BUMPER');
 
       switch (curCamMode.id) {
@@ -11166,11 +11193,11 @@ function startStoryIntro(chapterIdx) {
       }
 
       // Top-Center Rear-View Mirror Camera (Looks backward along the touge!)
-      const mirPos = pPos.clone().addScaledVector(_u, 1.35).addScaledVector(_f, -0.5);
-      const mirLook = pPos.clone().addScaledVector(ps.tangent, -24.0).addScaledVector(_u, 1.1);
-      mirrorCam.position.copy(mirPos);
+      _mirPos.copy(pPos).addScaledVector(_u, 1.35).addScaledVector(_f, -0.5);
+      _mirLook.copy(pPos).addScaledVector(ps.tangent, -24.0).addScaledVector(_u, 1.1);
+      mirrorCam.position.copy(_mirPos);
       mirrorCam.up.copy(_u);
-      mirrorCam.lookAt(mirLook);
+      mirrorCam.lookAt(_mirLook);
     }
 
     // ============================================================================
@@ -11317,160 +11344,15 @@ function startStoryIntro(chapterIdx) {
       }
     }
 
-    function drawCircularRadar() {
-      if (!trackData) return;
-      const ctx = radarCtx;
-      const w = radarCanvas.width, h = radarCanvas.height;
-      const cx = w / 2, cy = h / 2;
-      ctx.clearRect(0, 0, w, h);
+    // Pre-rendered offscreen caches for Tachometer & Radar (Zero-cost static rendering)
+    let tachoBgCanvas = null;
+    let radarBgCanvas = null;
 
-      const now = performance.now() * 0.001;
+    function buildTachoBg(w, h, cx, cy, r) {
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
 
-      // 1. Tactical Polar Grid & Range Rings
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
-      ctx.lineWidth = 1;
-      // Concentric Range Rings (26px, 52px, 72px)
-      [26, 52, 72].forEach(r => {
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.stroke();
-      });
-      // Crosshairs
-      ctx.beginPath();
-      ctx.moveTo(cx, 6); ctx.lineTo(cx, h - 6);
-      ctx.moveTo(6, cy); ctx.lineTo(w - 6, cy);
-      ctx.stroke();
-
-      // 2. Animated Rotating Tactical Radar Sweep Beam
-      const sweepAngle = (now * 1.8) % (Math.PI * 2);
-      const sweepGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 75);
-      sweepGrad.addColorStop(0, 'rgba(56, 189, 248, 0.25)');
-      sweepGrad.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.arc(cx, cy, 75, sweepAngle - 0.45, sweepAngle);
-      ctx.closePath();
-      ctx.fillStyle = sweepGrad;
-      ctx.fill();
-
-      // Sweep leading beam line
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(cx + Math.cos(sweepAngle) * 75, cy + Math.sin(sweepAngle) * 75);
-      ctx.strokeStyle = 'rgba(186, 230, 253, 0.45)';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-      ctx.restore();
-
-      // 3. Transform surrounding spline points into player-heading-up radar coordinates
-      const ps = sampleSpline(battle.s);
-      const fwdX = ps.tangent.x, fwdZ = ps.tangent.z;
-      const rightX = -fwdZ, rightZ = fwdX;
-      const scale = 1.18;
-
-      ctx.save();
-      ctx.translate(cx, cy + 10);
-
-      // 3a. Draw Asphalt Corridor (dark road bed)
-      ctx.beginPath();
-      for (let ds = -45; ds <= 90; ds += 3) {
-        const sp = sampleSpline(battle.s + ds);
-        const dx = sp.pos.x - ps.pos.x;
-        const dz = sp.pos.z - ps.pos.z;
-        const rx = (dx * rightX + dz * rightZ) * scale;
-        const ry = -(dx * fwdX + dz * fwdZ) * scale;
-        if (ds === -45) ctx.moveTo(rx, ry);
-        else ctx.lineTo(rx, ry);
-      }
-      ctx.strokeStyle = '#1e293b';
-      ctx.lineWidth = 9;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.stroke();
-
-      // 3b. Draw Racing Line with Curvature Heatmap Glow (Yellow/Amber on hairpins)
-      ctx.beginPath();
-      for (let ds = -45; ds <= 90; ds += 3) {
-        const sp = sampleSpline(battle.s + ds);
-        const dx = sp.pos.x - ps.pos.x;
-        const dz = sp.pos.z - ps.pos.z;
-        const rx = (dx * rightX + dz * rightZ) * scale;
-        const ry = -(dx * fwdX + dz * fwdZ) * scale;
-        if (ds === -45) ctx.moveTo(rx, ry);
-        else ctx.lineTo(rx, ry);
-      }
-      // Check upcoming turn severity
-      const aheadSample = sampleSpline(battle.s + 18);
-      const isSharpCurve = Math.abs(aheadSample.curvature) > 0.015;
-      const isExtremeCurve = Math.abs(aheadSample.curvature) > 0.024;
-      
-      ctx.strokeStyle = isExtremeCurve ? '#ef4444' : (isSharpCurve ? '#f59e0b' : '#38bdf8');
-      ctx.lineWidth = 3.5;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.shadowColor = isExtremeCurve ? '#ef4444' : (isSharpCurve ? '#f59e0b' : '#38bdf8');
-      ctx.shadowBlur = 6;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // 3c. Draw Rival Tactical Blip with Pulsing Ring
-      const rs = sampleSpline(battle.rivalS);
-      const rdx = rs.pos.x - ps.pos.x;
-      const rdz = rs.pos.z - ps.pos.z;
-      const rrx = (rdx * rightX + rdz * rightZ) * scale;
-      const rry = -(rdx * fwdX + rdz * fwdZ) * scale;
-
-      // Pulse ring
-      const pulsePhase = (now * 2.5) % 1;
-      const pulseRadius = 5 + pulsePhase * 10;
-      const pulseAlpha = Math.max(0, 1 - pulsePhase);
-      ctx.beginPath();
-      ctx.arc(rrx, rry, pulseRadius, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(239, 68, 68, ${pulseAlpha.toFixed(2)})`;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // Solid Rival Dot
-      ctx.fillStyle = '#ef4444';
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 1.5;
-      ctx.shadowColor = '#ef4444';
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      ctx.arc(rrx, rry, 5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // 3d. Draw Player Cyan Arrow at Radar Center (Tactical Chevron)
-      ctx.fillStyle = '#38bdf8';
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 1.5;
-      ctx.shadowColor = '#38bdf8';
-      ctx.shadowBlur = 10;
-      ctx.beginPath();
-      ctx.moveTo(0, -9);
-      ctx.lineTo(7, 7);
-      ctx.lineTo(0, 3);
-      ctx.lineTo(-7, 7);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      ctx.restore();
-    }
-
-    function drawAnalogTachometer(speedKmh, rpm, gear, driftLevel) {
-      const ctx = tachoCtx;
-      const w = tachoCanvas.width, h = tachoCanvas.height;
-      const cx = w / 2, cy = h / 2;
-      const r = 104;
-      ctx.clearRect(0, 0, w, h);
-
-      ctx.save();
       // 1. Metallic Outer Bezel
       const bezelGrad = ctx.createLinearGradient(0, 0, w, h);
       bezelGrad.addColorStop(0, '#eef4fa');
@@ -11526,11 +11408,177 @@ function startStoryIntro(chapterIdx) {
       ctx.fillStyle = '#b8c7d8';
       ctx.font = 'bold 11px "Chakra Petch", sans-serif';
       ctx.fillText('x1000 rpm', cx, cy + 28);
+      return c;
+    }
 
-      // 4. Digital Speed (Red/Orange "116" on bottom-left inside dial)
+    function buildRadarBg(w, h, cx, cy) {
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
+
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
+      ctx.lineWidth = 1;
+      [26, 52, 72].forEach(r => {
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+      ctx.beginPath();
+      ctx.moveTo(cx, 6); ctx.lineTo(cx, h - 6);
+      ctx.moveTo(6, cy); ctx.lineTo(w - 6, cy);
+      ctx.stroke();
+      return c;
+    }
+
+    // Pre-allocated typed arrays for minimap radar coordinates (Zero GC)
+    const MAX_RADAR_PTS = 36;
+    const radarPtsX = new Float32Array(MAX_RADAR_PTS);
+    const radarPtsY = new Float32Array(MAX_RADAR_PTS);
+    const _radarSamplePt = { x: 0, z: 0 };
+    const _radarPlayerPt = { x: 0, z: 0 };
+    const _radarRivalPt = { x: 0, z: 0 };
+
+    function drawCircularRadar() {
+      if (!trackData) return;
+      const ctx = radarCtx;
+      const w = radarCanvas.width, h = radarCanvas.height;
+      const cx = w / 2, cy = h / 2;
+      ctx.clearRect(0, 0, w, h);
+
+      // 1. Draw cached radar static grid
+      if (!radarBgCanvas) radarBgCanvas = buildRadarBg(w, h, cx, cy);
+      ctx.drawImage(radarBgCanvas, 0, 0);
+
+      const now = performance.now() * 0.001;
+
+      // 2. Animated Rotating Tactical Radar Sweep Beam
+      const sweepAngle = (now * 1.8) % (Math.PI * 2);
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, 75, sweepAngle - 0.45, sweepAngle);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.14)';
+      ctx.fill();
+
+      // Sweep leading beam line
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(sweepAngle) * 75, cy + Math.sin(sweepAngle) * 75);
+      ctx.strokeStyle = 'rgba(186, 230, 253, 0.45)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.restore();
+
+      // 3. Transform surrounding spline points into player-heading-up coordinates (GC-Free)
+      const ps = sampleSpline(battle.s);
+      sampleSplineXZ(battle.s, _radarPlayerPt);
+      const fwdX = ps.tangent.x, fwdZ = ps.tangent.z;
+      const rightX = -fwdZ, rightZ = fwdX;
+      const scale = 1.18;
+
+      ctx.save();
+      ctx.translate(cx, cy + 10);
+
+      // Single-pass sampling: fill typed arrays once, reuse for both road bed & racing line
+      let ptCount = 0;
+      for (let ds = -45; ds <= 90; ds += 4.5) {
+        if (ptCount >= MAX_RADAR_PTS) break;
+        sampleSplineXZ(battle.s + ds, _radarSamplePt);
+        const dx = _radarSamplePt.x - _radarPlayerPt.x;
+        const dz = _radarSamplePt.z - _radarPlayerPt.z;
+        radarPtsX[ptCount] = (dx * rightX + dz * rightZ) * scale;
+        radarPtsY[ptCount] = -(dx * fwdX + dz * fwdZ) * scale;
+        ptCount++;
+      }
+
+      if (ptCount > 1) {
+        // 3a. Draw Asphalt Corridor (dark road bed)
+        ctx.beginPath();
+        ctx.moveTo(radarPtsX[0], radarPtsY[0]);
+        for (let k = 1; k < ptCount; k++) {
+          ctx.lineTo(radarPtsX[k], radarPtsY[k]);
+        }
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 9;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+
+        // 3b. Draw Racing Line with Curvature Heatmap Glow
+        ctx.beginPath();
+        ctx.moveTo(radarPtsX[0], radarPtsY[0]);
+        for (let k = 1; k < ptCount; k++) {
+          ctx.lineTo(radarPtsX[k], radarPtsY[k]);
+        }
+        const aheadCurv = ps.curvature || 0;
+        const isSharpCurve = Math.abs(aheadCurv) > 0.015;
+        const isExtremeCurve = Math.abs(aheadCurv) > 0.024;
+        ctx.strokeStyle = isExtremeCurve ? '#ef4444' : (isSharpCurve ? '#f59e0b' : '#38bdf8');
+        ctx.lineWidth = 3.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+      }
+
+      // 3c. Draw Rival Tactical Blip with Pulsing Ring (GC-Free)
+      sampleSplineXZ(battle.rivalS, _radarRivalPt);
+      const rdx = _radarRivalPt.x - _radarPlayerPt.x;
+      const rdz = _radarRivalPt.z - _radarPlayerPt.z;
+      const rrx = (rdx * rightX + rdz * rightZ) * scale;
+      const rry = -(rdx * fwdX + rdz * fwdZ) * scale;
+
+      const pulsePhase = (now * 2.5) % 1;
+      const pulseRadius = 5 + pulsePhase * 10;
+      const pulseAlpha = Math.max(0, 1 - pulsePhase);
+      ctx.beginPath();
+      ctx.arc(rrx, rry, pulseRadius, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(239, 68, 68, ${pulseAlpha.toFixed(2)})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ef4444';
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(rrx, rry, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // 3d. Draw Player Cyan Arrow at Radar Center (Tactical Chevron)
+      ctx.fillStyle = '#38bdf8';
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, -9);
+      ctx.lineTo(7, 7);
+      ctx.lineTo(0, 3);
+      ctx.lineTo(-7, 7);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function drawAnalogTachometer(speedKmh, rpm, gear, driftLevel) {
+      const ctx = tachoCtx;
+      const w = tachoCanvas.width, h = tachoCanvas.height;
+      const cx = w / 2, cy = h / 2;
+      const r = 104;
+
+      if (!tachoBgCanvas) {
+        tachoBgCanvas = buildTachoBg(w, h, cx, cy, r);
+      }
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(tachoBgCanvas, 0, 0);
+
+      // 4. Digital Speed
       ctx.fillStyle = '#ff5226';
       ctx.font = 'italic 900 32px "Chakra Petch", sans-serif';
       ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       ctx.fillText(String(speedKmh), cx - 6, cy + 58);
 
       // 5. DRIFT label & cyan bars at bottom
@@ -11556,13 +11604,13 @@ function startStoryIntro(chapterIdx) {
       ctx.fillText(String(gear), cx + 44, cy + 66);
 
       // 7. Glowing Cyan Tachometer Needle
+      const startAngle = Math.PI * 0.72;
+      const endAngle = Math.PI * 2.28;
       const clampedRpm = THREE.MathUtils.clamp(rpm / 1000, 0.5, 8.4);
       const needleAng = startAngle + (clampedRpm / 8.5) * (endAngle - startAngle);
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(needleAng);
-      ctx.shadowColor = '#00e5ff';
-      ctx.shadowBlur = 12;
       ctx.beginPath();
       ctx.moveTo(-14, -3);
       ctx.lineTo(r - 14, -1.5);
@@ -11581,8 +11629,6 @@ function startStoryIntro(chapterIdx) {
       ctx.strokeStyle = '#9fb2c8';
       ctx.lineWidth = 2;
       ctx.stroke();
-
-      ctx.restore();
     }
 
     // ============================================================================
@@ -11913,19 +11959,22 @@ function startStoryIntro(chapterIdx) {
         worldMountainFar.position.x = mainCam.position.x;
         worldMountainFar.position.z = mainCam.position.z;
       }
-      // 2. Radio tower beacon strobe blink (1.0 Hz, 400ms ON / 600ms OFF)
+      // 2. Radio tower beacon strobe blink (1.0 Hz, 400ms ON / 600ms OFF - only updates buffer on state change)
       if (worldValleyLights && beaconLightIndices.length > 0) {
         const beaconOn = (time % 1.0) < 0.4;
-        const colAttr = worldValleyLights.geometry.getAttribute('color');
-        if (colAttr) {
-          const r = beaconOn ? 1.0 : 0.08;
-          const g = beaconOn ? 0.05 : 0.01;
-          const b = beaconOn ? 0.05 : 0.01;
-          for (let k = 0; k < beaconLightIndices.length; k++) {
-            const idx = beaconLightIndices[k];
-            colAttr.setXYZ(idx, r, g, b);
+        if (typeof window.__lastBeaconState === 'undefined' || window.__lastBeaconState !== beaconOn) {
+          window.__lastBeaconState = beaconOn;
+          const colAttr = worldValleyLights.geometry.getAttribute('color');
+          if (colAttr) {
+            const r = beaconOn ? 1.0 : 0.08;
+            const g = beaconOn ? 0.05 : 0.01;
+            const b = beaconOn ? 0.05 : 0.01;
+            for (let k = 0; k < beaconLightIndices.length; k++) {
+              const idx = beaconLightIndices[k];
+              colAttr.setXYZ(idx, r, g, b);
+            }
+            colAttr.needsUpdate = true;
           }
-          colAttr.needsUpdate = true;
         }
       }
       // 3. Gentle valley mist rotation
@@ -11976,18 +12025,25 @@ function startStoryIntro(chapterIdx) {
       renderer.clear();
       renderer.render(scene, mainCam);
 
-      // 2. Render Top-Center Real-Time Rear-View Mirror during RACE (Matching Screenshots 4 & 5!)
+      // 2. Render Top-Center Real-Time Rear-View Mirror during RACE (Optimized 30 FPS throttle)
       if (currentScreen === 'RACE' && trackData && W >= 768) {
-        const mw = 420;
-        const mh = 108;
-        const mx = Math.round((W - mw) / 2);
-        const my = Math.round(H - 10 - mh); // WebGL y is from bottom
-        renderer.setViewport(mx, my, mw, mh);
-        renderer.setScissor(mx, my, mw, mh);
-        renderer.setScissorTest(true);
-        renderer.clearDepth();
-        renderer.render(scene, mirrorCam);
-        renderer.setScissorTest(false);
+        if (typeof window.__mirrorTick === 'undefined') window.__mirrorTick = 0;
+        window.__mirrorTick++;
+        if (window.__mirrorTick % 2 === 0) {
+          const mw = 420;
+          const mh = 108;
+          const mx = Math.round((W - mw) / 2);
+          const my = Math.round(H - 10 - mh); // WebGL y is from bottom
+          renderer.setViewport(mx, my, mw, mh);
+          renderer.setScissor(mx, my, mw, mh);
+          renderer.setScissorTest(true);
+          renderer.clearDepth();
+          const prevShadow = renderer.shadowMap.autoUpdate;
+          renderer.shadowMap.autoUpdate = false; // Disable redundant shadow map re-render for mirror
+          renderer.render(scene, mirrorCam);
+          renderer.shadowMap.autoUpdate = prevShadow;
+          renderer.setScissorTest(false);
+        }
       }
     }
 
