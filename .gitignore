@@ -1,0 +1,15 @@
+# Temporary scratch files & test files
+scratch/
+scratch_*.html
+test_*.html
+test_*.png
+
+# Chrome / browser profiles
+**/chrome_prof/
+**/chrome_qa_profile/
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
