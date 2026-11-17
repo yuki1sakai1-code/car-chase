@@ -1457,24 +1457,25 @@
 
     .intro-dialogue-box {
       position: absolute;
-      top: 50%;
-      left: 48%;
+      top: 48%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      width: min(780px, 84vw);
-      padding: 26px 54px;
+      width: min(880px, 88vw);
+      padding: 18px 48px;
       background: #ffffff;
       border: 3px solid #00f0ff;
-      border-radius: 54px;
+      border-radius: 9999px;
       box-shadow: 0 0 22px rgba(0, 240, 255, 0.9),
                   0 0 50px rgba(0, 240, 255, 0.45),
                   0 14px 40px rgba(0, 0, 0, 0.75);
       color: #0b1324;
-      font-size: clamp(18px, 1.9vw, 26px);
+      font-size: clamp(17px, 1.8vw, 24px);
       font-weight: 800;
-      line-height: 1.65;
+      line-height: 1.55;
       letter-spacing: 1.2px;
       text-align: center;
       z-index: 8;
+      box-sizing: border-box;
     }
 
     .intro-char-portrait {
@@ -2753,12 +2754,17 @@
       }
       .intro-dialogue-box {
         top: 36%;
-        width: 92vw;
-        padding: 14px 22px;
-        border-radius: 32px;
-        border-width: 2px;
-        font-size: 14px;
-        line-height: 1.5;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: calc(100vw - 20px);
+        max-width: 520px;
+        padding: 10px 20px;
+        border-radius: 9999px;
+        border-width: 2.5px;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.45;
+        letter-spacing: 0.6px;
       }
       .intro-char-portrait {
         right: 0;
