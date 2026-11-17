@@ -12037,25 +12037,21 @@ function startStoryIntro(chapterIdx) {
       renderer.clear();
       renderer.render(scene, mainCam);
 
-      // 2. Render Top-Center Real-Time Rear-View Mirror during RACE (Optimized 30 FPS throttle)
+      // 2. Render Top-Center Real-Time Rear-View Mirror during RACE (Smooth 60 FPS, no flicker)
       if (currentScreen === 'RACE' && trackData && W >= 768) {
-        if (typeof window.__mirrorTick === 'undefined') window.__mirrorTick = 0;
-        window.__mirrorTick++;
-        if (window.__mirrorTick % 2 === 0) {
-          const mw = 420;
-          const mh = 108;
-          const mx = Math.round((W - mw) / 2);
-          const my = Math.round(H - 10 - mh); // WebGL y is from bottom
-          renderer.setViewport(mx, my, mw, mh);
-          renderer.setScissor(mx, my, mw, mh);
-          renderer.setScissorTest(true);
-          renderer.clearDepth();
-          const prevShadow = renderer.shadowMap.autoUpdate;
-          renderer.shadowMap.autoUpdate = false; // Disable redundant shadow map re-render for mirror
-          renderer.render(scene, mirrorCam);
-          renderer.shadowMap.autoUpdate = prevShadow;
-          renderer.setScissorTest(false);
-        }
+        const mw = 420;
+        const mh = 108;
+        const mx = Math.round((W - mw) / 2);
+        const my = Math.round(H - 10 - mh); // WebGL y is from bottom
+        renderer.setViewport(mx, my, mw, mh);
+        renderer.setScissor(mx, my, mw, mh);
+        renderer.setScissorTest(true);
+        renderer.clearDepth();
+        const prevShadow = renderer.shadowMap.autoUpdate;
+        renderer.shadowMap.autoUpdate = false; // Disable redundant shadow map re-render for mirror
+        renderer.render(scene, mirrorCam);
+        renderer.shadowMap.autoUpdate = prevShadow;
+        renderer.setScissorTest(false);
       }
     }
 
@@ -12107,6 +12103,11 @@ function startStoryIntro(chapterIdx) {
 
     initAssets().then(() => {
       animate();
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('screen') === 'RACE') {
+        startStoryIntro(1);
+        startTougeBattle();
+      }
     }).catch((err) => {
       console.error('Asset initialization error (fallback activated):', err);
       if (!showroomCarMesh) setShowroomCar('AE86');
