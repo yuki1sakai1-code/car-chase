@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>頭文字T — TOUGE ARCADE STAGE (榛名山 / 下り)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;900&family=Orbitron:ital,wght@0,700;0,900;1,700;1,900&family=Chakra+Petch:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;900&family=Orbitron:ital,wght@0,700;0,900;1,700;1,900&family=Chakra+Petch:ital,wght@0,700;1,700&display=swap"
+    rel="stylesheet" />
 
   <!-- Three.js + GLTFLoader Offline Local Bundle (Guarantees zero-network offline & file:// execution) -->
   <script src="./assets/three_bundle.js"></script>
@@ -26,7 +29,8 @@
       -webkit-user-select: none;
     }
 
-    html, body {
+    html,
+    body {
       width: 100%;
       height: 100%;
       overflow: hidden;
@@ -207,6 +211,7 @@
       background: rgba(0, 180, 230, 0.35);
       transform: scale(1.03);
     }
+
     /* ==========================================================================
        SCREEN 1.5: 人物 & アバター選択 (CHARACTER & AVATAR SELECT)
        ========================================================================== */
@@ -215,6 +220,7 @@
       display: none;
       flex-direction: column;
     }
+
     #screen-character-select.active {
       display: flex;
     }
@@ -243,6 +249,7 @@
     .char-roster-column::-webkit-scrollbar {
       width: 5px;
     }
+
     .char-roster-column::-webkit-scrollbar-thumb {
       background: rgba(0, 229, 255, 0.45);
       border-radius: 3px;
@@ -614,8 +621,13 @@
     }
 
     @keyframes cyberPulse {
-      0% { box-shadow: 0 0 8px #00e5ff; }
-      100% { box-shadow: 0 0 20px #00e5ff, 0 0 30px rgba(0, 229, 255, 0.4); }
+      0% {
+        box-shadow: 0 0 8px #00e5ff;
+      }
+
+      100% {
+        box-shadow: 0 0 20px #00e5ff, 0 0 30px rgba(0, 229, 255, 0.4);
+      }
     }
 
     .avatar-style-name {
@@ -950,7 +962,10 @@
       padding-bottom: 4px;
       scrollbar-width: none;
     }
-    .course-chips-bar::-webkit-scrollbar { display: none; }
+
+    .course-chips-bar::-webkit-scrollbar {
+      display: none;
+    }
 
     .course-chip-btn {
       padding: 4px 10px;
@@ -1102,6 +1117,7 @@
       border: 1px solid #22c55e;
       color: #86efac;
     }
+
     .stage-status-badge.cleared {
       background: rgba(247, 185, 40, 0.25);
       border: 1px solid #f7b928;
@@ -1268,6 +1284,7 @@
       position: relative;
       padding-left: 14px;
     }
+
     .stage-dialogue-quote::before {
       content: '“';
       position: absolute;
@@ -1309,11 +1326,13 @@
       cursor: pointer;
       transition: all 0.14s ease;
     }
+
     .stage-sub-chip:hover {
       border-color: #38bdf8;
       color: #fff;
       transform: translateY(-1px);
     }
+
     .stage-sub-chip.active {
       background: #0284c7;
       border-color: #38bdf8;
@@ -1362,6 +1381,7 @@
       box-shadow: 0 4px 18px rgba(245, 158, 11, 0.45);
       transition: all 0.16s ease;
     }
+
     .course-confirm-action-btn:hover {
       transform: scale(1.02);
       box-shadow: 0 6px 24px rgba(245, 158, 11, 0.7);
@@ -1439,7 +1459,9 @@
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .intro-bottom-bar {
@@ -1452,7 +1474,8 @@
       display: flex;
       align-items: center;
       padding: 0 42px;
-      z-index: 10; /* Placed in front of character portrait as requested */
+      z-index: 10;
+      /* Placed in front of character portrait as requested */
     }
 
     .intro-dialogue-box {
@@ -1466,8 +1489,8 @@
       border: 3px solid #00f0ff;
       border-radius: 9999px;
       box-shadow: 0 0 22px rgba(0, 240, 255, 0.9),
-                  0 0 50px rgba(0, 240, 255, 0.45),
-                  0 14px 40px rgba(0, 0, 0, 0.75);
+        0 0 50px rgba(0, 240, 255, 0.45),
+        0 14px 40px rgba(0, 0, 0, 0.75);
       color: #0b1324;
       font-size: clamp(17px, 1.8vw, 24px);
       font-weight: 800;
@@ -1484,7 +1507,8 @@
       bottom: 0;
       width: 360px;
       height: 480px;
-      z-index: 3; /* Placed behind the bottom text bar layer */
+      z-index: 3;
+      /* Placed behind the bottom text bar layer */
       display: flex;
       align-items: flex-end;
       justify-content: center;
@@ -1569,7 +1593,8 @@
       color: #ffffff;
     }
 
-    .player-car-label, .player-course-label {
+    .player-car-label,
+    .player-course-label {
       font-size: 13px;
       font-weight: 700;
       color: #d0dce8;
@@ -1842,20 +1867,28 @@
       border-style: solid;
       pointer-events: none;
     }
+
     .hud-corner-bracket.top-left {
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       border-width: 2px 0 0 2px;
     }
+
     .hud-corner-bracket.top-right {
-      top: 0; right: 0;
+      top: 0;
+      right: 0;
       border-width: 2px 2px 0 0;
     }
+
     .hud-corner-bracket.bottom-left {
-      bottom: 0; left: 0;
+      bottom: 0;
+      left: 0;
       border-width: 0 0 2px 2px;
     }
+
     .hud-corner-bracket.bottom-right {
-      bottom: 0; right: 0;
+      bottom: 0;
+      right: 0;
       border-width: 0 2px 2px 0;
     }
 
@@ -1868,10 +1901,23 @@
       pointer-events: none;
       user-select: none;
     }
-    .compass-marker.north { top: -2px; color: #ef4444; }
-    .compass-marker.south { bottom: -2px; }
-    .compass-marker.east { right: -2px; }
-    .compass-marker.west { left: -2px; }
+
+    .compass-marker.north {
+      top: -2px;
+      color: #ef4444;
+    }
+
+    .compass-marker.south {
+      bottom: -2px;
+    }
+
+    .compass-marker.east {
+      right: -2px;
+    }
+
+    .compass-marker.west {
+      left: -2px;
+    }
 
     .radar-circle-wrap {
       width: 158px;
@@ -1974,12 +2020,28 @@
       height: 5px;
       border-radius: 50%;
       background: #94a3b8;
-      box-shadow: inset 0 0 1px #000, 0 1px 2px rgba(0,0,0,0.8);
+      box-shadow: inset 0 0 1px #000, 0 1px 2px rgba(0, 0, 0, 0.8);
     }
-    .console-screw.top-left { top: 4px; left: 4px; }
-    .console-screw.top-right { top: 4px; right: 4px; }
-    .console-screw.bottom-left { bottom: 4px; left: 4px; }
-    .console-screw.bottom-right { bottom: 4px; right: 4px; }
+
+    .console-screw.top-left {
+      top: 4px;
+      left: 4px;
+    }
+
+    .console-screw.top-right {
+      top: 4px;
+      right: 4px;
+    }
+
+    .console-screw.bottom-left {
+      bottom: 4px;
+      left: 4px;
+    }
+
+    .console-screw.bottom-right {
+      bottom: 4px;
+      right: 4px;
+    }
 
     .shifter-console-header {
       width: 100%;
@@ -2029,12 +2091,19 @@
       color: #ef4444;
       animation: alertBlink 0.22s infinite alternate;
     }
+
     .shifter-rpm-alert.visible {
       display: block;
     }
+
     @keyframes alertBlink {
-      from { opacity: 0.2; }
-      to { opacity: 1.0; }
+      from {
+        opacity: 0.2;
+      }
+
+      to {
+        opacity: 1.0;
+      }
     }
 
     .shifter-gate-container {
@@ -2119,7 +2188,8 @@
       transition: all 0.15s ease;
     }
 
-    .quick-btn:hover, .quick-btn.active {
+    .quick-btn:hover,
+    .quick-btn.active {
       background: rgba(27, 228, 255, 0.25);
       border-color: #1be4ff;
       color: #ffffff;
@@ -2390,14 +2460,17 @@
     #mobile-touch-controls {
       display: none;
     }
+
     .txt-mob {
       display: none;
     }
 
-    @media (max-width: 768px), (max-aspect-ratio: 1/1) {
+    @media (max-width: 768px),
+    (max-aspect-ratio: 1/1) {
       .txt-full {
         display: none !important;
       }
+
       .txt-mob {
         display: inline !important;
       }
@@ -2407,14 +2480,19 @@
         height: 52px;
         padding: 0 12px;
       }
-      .arcade-header-titles h1, .arcade-title-main {
+
+      .arcade-header-titles h1,
+      .arcade-title-main {
         font-size: 18px;
         letter-spacing: 1px;
       }
-      .arcade-header-titles p, .arcade-title-sub {
+
+      .arcade-header-titles p,
+      .arcade-title-sub {
         font-size: 10px;
         letter-spacing: 0.5px;
       }
+
       .arcade-countdown {
         font-size: 26px;
       }
@@ -2437,12 +2515,14 @@
         pointer-events: auto;
         z-index: 15;
       }
+
       .car-option-btn {
         padding: 8px 6px;
         font-size: 12px;
         min-height: 34px;
         text-align: center;
       }
+
       .car-select-hint {
         position: absolute;
         bottom: 12px;
@@ -2468,9 +2548,11 @@
         -webkit-overflow-scrolling: touch;
         pointer-events: auto;
       }
+
       .char-roster-column::-webkit-scrollbar {
         display: none;
       }
+
       .char-roster-column {
         width: 100%;
         display: flex;
@@ -2481,9 +2563,11 @@
         flex-shrink: 0;
         scrollbar-width: none;
       }
+
       .char-roster-header {
         display: none;
       }
+
       .char-card-btn {
         flex: 0 0 95px;
         min-height: 74px;
@@ -2493,89 +2577,111 @@
         text-align: center;
         gap: 3px;
       }
+
       .char-card-btn::before {
         display: none;
       }
+
       .char-card-thumb-wrap {
         width: 38px;
         height: 44px;
       }
+
       .char-card-name {
         font-size: 11px;
         line-height: 1.1;
       }
-      .char-card-team, .char-card-car {
+
+      .char-card-team,
+      .char-card-car {
         display: none;
       }
+
       .char-stage-column {
         width: 100%;
         display: flex;
         flex-direction: column;
         gap: 8px;
       }
+
       .char-stage-top {
         display: flex;
         flex-direction: row;
         gap: 8px;
         align-items: flex-start;
       }
+
       .char-hero-portrait-frame {
         width: 95px;
         height: 115px;
         flex-shrink: 0;
       }
+
       .char-details-box {
         flex: 1;
         min-width: 0;
       }
+
       .char-header-title {
         font-size: 16px;
         line-height: 1.1;
       }
+
       .char-header-en {
         font-size: 9px;
       }
+
       .char-quote-box {
         font-size: 10px;
         padding: 4px 6px;
         margin: 4px 0;
       }
+
       .char-bio-text {
         display: none;
       }
+
       .char-stats-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 4px;
       }
+
       .char-stat-label-row {
         font-size: 9px;
       }
+
       .char-stat-bar-bg {
         height: 3px;
       }
+
       .char-avatar-section {
         background: rgba(10, 18, 28, 0.85);
         padding: 8px;
         border-radius: 4px;
       }
+
       .char-avatar-section-title {
         font-size: 10px;
         margin-bottom: 4px;
       }
+
       .char-avatar-options-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 4px;
       }
+
       .char-avatar-card {
         padding: 4px;
       }
+
       .avatar-preview-box {
         width: 44px;
         height: 44px;
         margin: 0 auto 2px;
       }
+
       .avatar-style-name {
         font-size: 9px;
         text-align: center;
@@ -2583,9 +2689,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
       .avatar-style-desc {
         display: none;
       }
+
       .char-select-bottom-bar {
         position: absolute;
         bottom: 0;
@@ -2600,13 +2708,16 @@
         border-top: 1px solid rgba(80, 140, 190, 0.3);
         z-index: 10;
       }
+
       .char-key-hint {
         display: none;
       }
+
       .char-back-btn {
         padding: 8px 12px;
         font-size: 11px;
       }
+
       .char-confirm-btn {
         flex: 1;
         padding: 10px 14px;
@@ -2623,6 +2734,7 @@
         overflow-y: auto;
         gap: 8px;
       }
+
       .course-left-pane {
         width: 100%;
         border-right: none;
@@ -2630,32 +2742,39 @@
         padding: 10px;
         height: auto;
       }
+
       .course-main-title {
         font-size: 24px;
       }
+
       .course-main-sub {
         font-size: 11px;
         margin-bottom: 6px;
       }
+
       .course-spline-map-box {
         height: 140px;
         width: 100%;
       }
+
       #course-preview-canvas {
         width: 100%;
         height: 140px;
       }
+
       #btn-confirm-course {
         width: 100%;
         padding: 10px;
         font-size: 14px;
         margin-top: 6px;
       }
+
       #btn-back-to-char {
         width: 100%;
         padding: 8px;
         font-size: 12px;
       }
+
       .course-right-pane {
         width: 100%;
         height: 120px;
@@ -2663,17 +2782,21 @@
         position: relative;
         overflow: hidden;
       }
+
       .course-spec-readout {
         bottom: 8px;
         left: 10px;
       }
+
       .course-spec-badge {
         font-size: 10px;
         padding: 2px 6px;
       }
+
       .course-spec-dist {
         font-size: 24px;
       }
+
       .course-spec-features {
         font-size: 11px;
       }
@@ -2689,10 +2812,12 @@
         align-items: center;
         justify-content: space-between;
       }
+
       .chapter-back-btn {
         padding: 4px 6px;
         font-size: 10px;
       }
+
       .chapter-grid {
         top: 100px;
         bottom: 30px;
@@ -2705,17 +2830,21 @@
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
       }
+
       .chapter-card {
         min-height: 52px;
         padding: 6px 8px;
         transform: none;
       }
+
       .chapter-card:hover {
         transform: none;
       }
+
       .chapter-card-inner {
         transform: none;
       }
+
       .chapter-badge {
         transform: none;
         font-size: 9px;
@@ -2723,12 +2852,15 @@
         top: 4px;
         right: 6px;
       }
+
       .chapter-cond {
         font-size: 9px;
       }
+
       .chapter-title {
         font-size: 12px;
       }
+
       .chapter-footer {
         font-size: 10px;
         left: 10px;
@@ -2740,18 +2872,22 @@
         height: 50px;
         padding: 0 12px;
       }
+
       .intro-chapter-heading {
         font-size: 13px;
       }
+
       .intro-loading-wrap {
         font-size: 11px;
         gap: 6px;
       }
+
       .intro-spinner {
         width: 20px;
         height: 20px;
         border-width: 2px;
       }
+
       .intro-dialogue-box {
         top: 36%;
         left: 50%;
@@ -2766,6 +2902,7 @@
         line-height: 1.45;
         letter-spacing: 0.6px;
       }
+
       .intro-char-portrait {
         right: 0;
         bottom: 0;
@@ -2773,11 +2910,13 @@
         height: 230px;
         z-index: 3;
       }
+
       .intro-bottom-bar {
         height: 44px;
         padding: 0 10px;
         z-index: 10;
       }
+
       #intro-bottom-text {
         font-size: 11px !important;
       }
@@ -2797,20 +2936,24 @@
         gap: 0;
         z-index: 25;
       }
+
       .story-tag-bar {
         display: none;
       }
+
       .player-info-card {
         padding: 3px 6px;
         gap: 6px;
         border-radius: 4px;
         border-width: 1px;
       }
+
       .portrait-thumb {
         width: 36px;
         height: 44px;
         border-radius: 3px;
       }
+
       .player-name {
         font-size: 12px;
         line-height: 1.1;
@@ -2818,15 +2961,18 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
       .player-car-label {
         font-size: 9px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
       .player-course-label {
         display: none;
       }
+
       .mission-box {
         display: none;
       }
@@ -2840,9 +2986,12 @@
         align-items: flex-end;
         z-index: 25;
       }
+
       .rival-portrait-top {
-        display: none; /* Hide huge portrait during mobile race so road is clear */
+        display: none;
+        /* Hide huge portrait during mobile race so road is clear */
       }
+
       .rival-card {
         padding: 4px 6px;
         border-radius: 4px;
@@ -2851,6 +3000,7 @@
         flex-direction: column;
         align-items: flex-end;
       }
+
       .rival-name {
         font-size: 12px;
         line-height: 1.1;
@@ -2858,6 +3008,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
       .rival-car {
         font-size: 9px;
         white-space: nowrap;
@@ -2865,14 +3016,17 @@
         text-overflow: ellipsis;
         margin-bottom: 0;
       }
+
       .rival-status-text {
         font-size: 9px;
       }
+
       .rival-gap-value {
         font-size: 13px;
         margin: 0;
         line-height: 1.1;
       }
+
       .rival-gap-bar-track {
         width: 75px;
         height: 3px;
@@ -2885,6 +3039,7 @@
         width: 42px;
         height: 42px;
       }
+
       #turn-warning-sign svg {
         width: 42px;
         height: 42px;
@@ -2904,6 +3059,7 @@
         gap: 3px;
         z-index: 25;
       }
+
       .quick-btn {
         padding: 3px 5px;
         font-size: 10px;
@@ -2922,46 +3078,58 @@
         gap: 0;
         align-items: flex-start;
       }
+
       .radar-column {
         gap: 2px;
       }
+
       .remaining-dist {
         font-size: 11px;
       }
+
       .pro-shifter-console,
       .pro-course-card,
       .hud-corner-bracket,
       .compass-marker {
         display: none !important;
       }
+
       .pro-distance-card {
         width: 82px;
         padding: 2px 4px;
         border-top-width: 2px;
       }
+
       .pro-dist-header {
         display: none !important;
       }
+
       .pro-dist-val {
         font-size: 14px;
       }
+
       .pro-dist-unit {
         font-size: 9px;
       }
+
       .pro-dist-meter-track {
         height: 2px;
       }
+
       .pro-radar-frame {
         padding: 0;
       }
+
       .radar-circle-wrap {
         width: 74px;
         height: 74px;
         border-width: 2px;
       }
+
       .shifter-box {
         display: none;
       }
+
       .course-sub-label {
         display: none;
       }
@@ -2973,10 +3141,12 @@
         gap: 0;
         align-items: flex-end;
       }
+
       #analog-tacho-canvas {
         width: 110px;
         height: 110px;
       }
+
       .driving-line-footer {
         display: none;
       }
@@ -2993,15 +3163,18 @@
         pointer-events: auto;
         z-index: 35;
       }
+
       .mobile-steer-group {
         display: flex;
         gap: 10px;
       }
+
       .mobile-pedal-group {
         display: flex;
         align-items: flex-end;
         gap: 8px;
       }
+
       .mobile-touch-btn {
         -webkit-appearance: none;
         appearance: none;
@@ -3023,17 +3196,21 @@
         transition: transform 0.08s ease, background 0.08s ease, border-color 0.08s ease;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(44, 230, 255, 0.15);
       }
-      .mobile-touch-btn.pressed, .mobile-touch-btn:active {
+
+      .mobile-touch-btn.pressed,
+      .mobile-touch-btn:active {
         transform: scale(0.92);
         background: rgba(44, 230, 255, 0.45);
         border-color: #2ce6ff;
         box-shadow: 0 0 20px rgba(44, 230, 255, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.5);
       }
+
       .btn-steer {
         width: 52px;
         height: 52px;
         font-size: 20px;
       }
+
       .btn-accel {
         width: 58px;
         height: 58px;
@@ -3041,11 +3218,14 @@
         border-color: rgba(72, 255, 120, 0.65);
         color: #72ff96;
       }
-      .btn-accel.pressed, .btn-accel:active {
+
+      .btn-accel.pressed,
+      .btn-accel:active {
         background: rgba(72, 255, 120, 0.45);
         border-color: #72ff96;
         box-shadow: 0 0 20px rgba(72, 255, 120, 0.8);
       }
+
       .btn-brake {
         width: 48px;
         height: 48px;
@@ -3053,11 +3233,14 @@
         border-color: rgba(255, 72, 90, 0.65);
         color: #ff6878;
       }
-      .btn-brake.pressed, .btn-brake:active {
+
+      .btn-brake.pressed,
+      .btn-brake:active {
         background: rgba(255, 72, 90, 0.45);
         border-color: #ff6878;
         box-shadow: 0 0 20px rgba(255, 72, 90, 0.8);
       }
+
       .btn-drift {
         width: 50px;
         height: 40px;
@@ -3067,7 +3250,9 @@
         border-color: rgba(247, 185, 40, 0.7);
         color: #f7b928;
       }
-      .btn-drift.pressed, .btn-drift:active {
+
+      .btn-drift.pressed,
+      .btn-drift:active {
         background: rgba(247, 185, 40, 0.45);
         border-color: #f7b928;
         box-shadow: 0 0 20px rgba(247, 185, 40, 0.8);
@@ -3077,13 +3262,16 @@
       .touge-result-card {
         padding: 24px 20px;
       }
+
       .touge-result-title {
         font-size: 34px;
       }
+
       .touge-result-stats {
         font-size: 15px;
         margin-bottom: 18px;
       }
+
       .touge-btn {
         padding: 10px 18px;
         font-size: 14px;
@@ -3092,6 +3280,7 @@
   </style>
 
 </head>
+
 <body>
   <div id="app">
     <canvas id="webgl-canvas"></canvas>
@@ -3122,7 +3311,7 @@
     <!-- ====================================================================
          SCREEN 2: モード選択 (GAME MODE SELECT - User Screenshot 1)
          ==================================================================== -->
-    
+
     <!-- ====================================================================
          SCREEN 1.5: 人物 & アバター選択 (CHARACTER & AVATAR SELECT)
          ==================================================================== -->
@@ -3202,7 +3391,8 @@
           <div class="char-stage-top">
             <div class="char-hero-portrait-frame">
               <div class="char-hero-badge-overlay" id="char-stage-badge">PROJECT.D</div>
-              <img id="char-hero-portrait" class="char-hero-img" src="./assets/character/processed/char_takumi_bust.png" alt="Driver" />
+              <img id="char-hero-portrait" class="char-hero-img" src="./assets/character/processed/char_takumi_bust.png"
+                alt="Driver" />
               <canvas id="char-hero-anim-canvas" class="char-anim-overlay"></canvas>
             </div>
 
@@ -3223,7 +3413,9 @@
                     <span>ドリフト技術 (DRIFT)</span>
                     <span class="char-stat-val" id="stat-drift-val">98%</span>
                   </div>
-                  <div class="char-stat-bar-bg"><div class="char-stat-bar-fill" id="stat-drift-bar" style="width: 98%;"></div></div>
+                  <div class="char-stat-bar-bg">
+                    <div class="char-stat-bar-fill" id="stat-drift-bar" style="width: 98%;"></div>
+                  </div>
                 </div>
 
                 <div class="char-stat-row">
@@ -3231,7 +3423,9 @@
                     <span>コーナリング (CORNERING)</span>
                     <span class="char-stat-val" id="stat-corner-val">99%</span>
                   </div>
-                  <div class="char-stat-bar-bg"><div class="char-stat-bar-fill" id="stat-corner-bar" style="width: 99%;"></div></div>
+                  <div class="char-stat-bar-bg">
+                    <div class="char-stat-bar-fill" id="stat-corner-bar" style="width: 99%;"></div>
+                  </div>
                 </div>
 
                 <div class="char-stat-row">
@@ -3239,7 +3433,9 @@
                     <span>直線最高速 (SPEED)</span>
                     <span class="char-stat-val" id="stat-speed-val">76%</span>
                   </div>
-                  <div class="char-stat-bar-bg"><div class="char-stat-bar-fill" id="stat-speed-bar" style="width: 76%;"></div></div>
+                  <div class="char-stat-bar-bg">
+                    <div class="char-stat-bar-fill" id="stat-speed-bar" style="width: 76%;"></div>
+                  </div>
                 </div>
 
                 <div class="char-stat-row">
@@ -3247,7 +3443,9 @@
                     <span>集中力 / メンタル (MENTAL)</span>
                     <span class="char-stat-val" id="stat-mental-val">95%</span>
                   </div>
-                  <div class="char-stat-bar-bg"><div class="char-stat-bar-fill" id="stat-mental-bar" style="width: 95%;"></div></div>
+                  <div class="char-stat-bar-bg">
+                    <div class="char-stat-bar-fill" id="stat-mental-bar" style="width: 95%;"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3262,7 +3460,8 @@
             <div class="char-avatar-options-grid">
               <div class="char-avatar-card selected" data-style="0">
                 <div class="avatar-preview-box avatar-frame-classic">
-                  <img id="avatar-style-preview-0" src="./assets/character/processed/char_takumi_bust.png" alt="Classic" />
+                  <img id="avatar-style-preview-0" src="./assets/character/processed/char_takumi_bust.png"
+                    alt="Classic" />
                 </div>
                 <div class="avatar-style-name">スタイル 01: クラシック</div>
                 <div class="avatar-style-desc">バストアップ・原画スタイル</div>
@@ -3270,7 +3469,8 @@
 
               <div class="char-avatar-card" data-style="1">
                 <div class="avatar-preview-box avatar-frame-racing">
-                  <img id="avatar-style-preview-1" src="./assets/character/processed/char_takumi_avatar.png" alt="Racing" />
+                  <img id="avatar-style-preview-1" src="./assets/character/processed/char_takumi_avatar.png"
+                    alt="Racing" />
                 </div>
                 <div class="avatar-style-name">スタイル 02: レーシング</div>
                 <div class="avatar-style-desc">ネオンサークル・集中フェイス</div>
@@ -3278,7 +3478,8 @@
 
               <div class="char-avatar-card" data-style="2">
                 <div class="avatar-preview-box avatar-frame-cyber">
-                  <img id="avatar-style-preview-2" src="./assets/character/processed/char_takumi_avatar.png" alt="Cyber" />
+                  <img id="avatar-style-preview-2" src="./assets/character/processed/char_takumi_avatar.png"
+                    alt="Cyber" />
                 </div>
                 <div class="avatar-style-name">スタイル 03: サイバーHUD</div>
                 <div class="avatar-style-desc">発光ターゲット・デジタル枠</div>
@@ -3286,7 +3487,8 @@
 
               <div class="char-avatar-card" data-style="3">
                 <div class="avatar-preview-box avatar-frame-gold">
-                  <img id="avatar-style-preview-3" src="./assets/character/processed/char_takumi_avatar.png" alt="Gold" />
+                  <img id="avatar-style-preview-3" src="./assets/character/processed/char_takumi_avatar.png"
+                    alt="Gold" />
                 </div>
                 <div class="avatar-style-name">スタイル 04: プロジェクトD</div>
                 <div class="avatar-style-desc">月桂樹・ゴールドクレスト</div>
@@ -3314,7 +3516,9 @@
           <p>走る峠と対戦相手を選択</p>
         </div>
         <div style="display:flex; align-items:center; gap:16px;">
-          <button class="chapter-back-btn" id="btn-course-random-gen" style="background: linear-gradient(135deg, #0284c7, #0369a1); border-color:#38bdf8; color:#fff; font-weight:800; font-size:12px; padding:6px 12px;">🎲 ランダムコース生成 [R]</button>
+          <button class="chapter-back-btn" id="btn-course-random-gen"
+            style="background: linear-gradient(135deg, #0284c7, #0369a1); border-color:#38bdf8; color:#fff; font-weight:800; font-size:12px; padding:6px 12px;">🎲
+            ランダムコース生成 [R]</button>
           <div class="arcade-countdown" id="course-select-timer">60</div>
         </div>
       </div>
@@ -3338,14 +3542,16 @@
           </div>
 
           <div class="course-action-row">
-            <button class="course-confirm-action-btn" id="btn-confirm-course"><span style="font-family:'Segoe UI Emoji','Apple Color Emoji',sans-serif; margin-right:6px;">🏁</span>このステージでバトル開始 [ENTER]</button>
+            <button class="course-confirm-action-btn" id="btn-confirm-course"><span
+                style="font-family:'Segoe UI Emoji','Apple Color Emoji',sans-serif; margin-right:6px;">🏁</span>このステージでバトル開始
+              [ENTER]</button>
             <button class="course-back-action-btn" id="btn-back-to-char">◀ 人物選択 [ESC]</button>
           </div>
         </div>
 
         <div class="course-right-pane" id="course-scenic-pane">
           <div class="course-right-overlay"></div>
-          
+
           <div class="stage-info-header">
             <div style="display:flex; align-items:center; gap:10px;">
               <span class="course-spec-badge" id="course-spec-badge-val">STAGE 01 / 15</span>
@@ -3358,7 +3564,7 @@
           <div class="stage-card-body">
             <div class="course-spec-dist" id="course-spec-dist-val">10.0 km</div>
             <div class="stage-chapter-title" id="stage-chapter-title-val">第01話 白山の挑戦者</div>
-            
+
             <div class="stage-feature-row">
               <span class="stage-feature-pill" id="stage-feature-pill-val">🛡️ 落石覆工スノーシェッド</span>
               <span class="stage-course-tag" id="stage-course-tag-val">榛名山 / 下り (深夜・月夜)</span>
@@ -3367,12 +3573,14 @@
             <!-- VS Rival Card -->
             <div class="stage-rival-box">
               <div class="stage-rival-avatar-wrap">
-                <img id="stage-rival-img" class="stage-rival-avatar-img" src="./assets/character/processed/char_bunta_avatar.png" alt="Rival">
+                <img id="stage-rival-img" class="stage-rival-avatar-img"
+                  src="./assets/character/processed/char_bunta_avatar.png" alt="Rival">
                 <span class="stage-vs-tag">VS</span>
               </div>
               <div class="stage-rival-details">
                 <div class="stage-rival-label">RIVAL TARGET</div>
-                <div class="stage-rival-name" id="stage-rival-name-val">藤原 文太 <span class="stage-rival-team" id="stage-rival-team-val">秋名レジェンド / とうふ店</span></div>
+                <div class="stage-rival-name" id="stage-rival-name-val">藤原 文太 <span class="stage-rival-team"
+                    id="stage-rival-team-val">秋名レジェンド / とうふ店</span></div>
                 <div class="stage-rival-car" id="stage-rival-car-val">SUBARU IMPREZA GC8 Version V</div>
                 <div class="stage-condition-row">
                   <span class="stage-cond-label">クリア条件:</span>
@@ -3415,7 +3623,9 @@
       <div class="chapter-subbar">
         <span id="chapter-clear-count">クリア 00 / 15</span>
         <div style="display:flex; gap:10px; align-items:center;">
-          <button class="chapter-back-btn" id="btn-random-course-gen" style="background: linear-gradient(135deg, #0284c7, #0369a1); border-color:#38bdf8; color:#fff; font-weight:900;">🎲 ランダムコース生成 [R]</button>
+          <button class="chapter-back-btn" id="btn-random-course-gen"
+            style="background: linear-gradient(135deg, #0284c7, #0369a1); border-color:#38bdf8; color:#fff; font-weight:900;">🎲
+            ランダムコース生成 [R]</button>
           <button class="chapter-back-btn" id="btn-back-to-course">◀ コース選択へ戻る</button>
         </div>
       </div>
@@ -3448,7 +3658,8 @@
       </div>
 
       <div class="intro-bottom-bar">
-        <span style="color:#ff3b5c; font-weight:900; font-size:20px; letter-spacing:1px;" id="intro-bottom-text">藤原 文太 / 秋名スピードスターズ　―　画面クリック または [ENTER / SPACE] でバトル開始</span>
+        <span style="color:#ff3b5c; font-weight:900; font-size:20px; letter-spacing:1px;" id="intro-bottom-text">藤原 文太 /
+          秋名スピードスターズ　―　画面クリック または [ENTER / SPACE] でバトル開始</span>
       </div>
     </div>
 
@@ -3482,7 +3693,8 @@
         <svg viewBox="0 0 100 100" width="76" height="76">
           <polygon points="50,4 96,50 50,96 4,50" fill="#f7c828" stroke="#141414" stroke-width="5" />
           <polygon points="50,10 90,50 50,90 10,50" fill="none" stroke="#141414" stroke-width="2" />
-          <path id="turn-arrow-path" d="M 58 72 L 58 40 L 36 40 L 36 28 L 18 44 L 36 60 L 36 48 L 48 48 L 48 72 Z" fill="#ffffff" stroke="#141414" stroke-width="3" stroke-linejoin="round" />
+          <path id="turn-arrow-path" d="M 58 72 L 58 40 L 36 40 L 36 28 L 18 44 L 36 60 L 36 48 L 48 48 L 48 72 Z"
+            fill="#ffffff" stroke="#141414" stroke-width="3" stroke-linejoin="round" />
         </svg>
       </div>
 
@@ -3583,11 +3795,11 @@
               </filter>
             </defs>
             <!-- Background Gate Channel Recesses (Dark Beveled Slot) -->
-            <path d="M 14 30 L 14 86 M 38 30 L 38 86 M 62 30 L 62 86 M 14 58 L 62 58"
-                  stroke="#05080d" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            <path d="M 14 30 L 14 86 M 38 30 L 38 86 M 62 30 L 62 86 M 14 58 L 62 58" stroke="#05080d" stroke-width="8"
+              stroke-linecap="round" stroke-linejoin="round" fill="none" />
             <!-- Polished Billet Gate Rails -->
-            <path d="M 14 30 L 14 86 M 38 30 L 38 86 M 62 30 L 62 86 M 14 58 L 62 58"
-                  stroke="#64748b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            <path d="M 14 30 L 14 86 M 38 30 L 38 86 M 62 30 L 62 86 M 14 58 L 62 58" stroke="#64748b"
+              stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
 
             <!-- Gear Numbers -->
             <text x="14" y="20" class="gear-num" id="gear-txt-1">1</text>
@@ -3598,7 +3810,8 @@
             <text x="62" y="104" class="gear-num" id="gear-txt-6">6</text>
 
             <!-- Shifter Lever Shaft (Lines from center 38, 58 to knob) -->
-            <line id="shifter-shaft" x1="38" y1="58" x2="14" y2="30" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+            <line id="shifter-shaft" x1="38" y1="58" x2="14" y2="30" stroke="#94a3b8" stroke-width="3"
+              stroke-linecap="round" />
 
             <!-- Active Gear Knob (Metallic Aluminum + Amber Core) -->
             <circle id="shifter-knob-shadow" cx="14" cy="30" r="9.5" fill="rgba(0,0,0,0.6)" filter="url(#knob-glow)" />
@@ -3610,12 +3823,19 @@
 
       <!-- Center-Bottom Quick Control Bar -->
       <div class="race-quick-controls">
-        <button class="quick-btn" id="btn-sound-toggle"><span class="txt-full">🔊 サウンド: ON [M]</span><span class="txt-mob">🔊 音</span></button>
-        <button class="quick-btn" id="btn-env-settings"><span class="txt-full">⚙ 環境設定 (朝/昼/夜・天気)</span><span class="txt-mob">⚙ 設定</span></button>
-        <button class="quick-btn" id="btn-cam-view"><span class="txt-full" id="txt-cam-full">視点切替: 三人称チェイス [C]</span><span class="txt-mob" id="txt-cam-mob">📷 視点</span></button>
-        <button class="quick-btn" id="btn-random-track-race" style="background:linear-gradient(135deg, rgba(2,132,199,0.8), rgba(3,105,161,0.9)); color:#fff; border-color:#38bdf8;"><span class="txt-full">🎲 新コース生成 [T]</span><span class="txt-mob">🎲 コース</span></button>
-        <button class="quick-btn" id="btn-auto-drive"><span class="txt-full" id="txt-auto-full">オートパイロット [P]</span><span class="txt-mob" id="txt-auto-mob">🤖 自動</span></button>
-        <button class="quick-btn" id="btn-to-chapters"><span class="txt-full">コース選択へ戻る [ESC]</span><span class="txt-mob">◀ コース</span></button>
+        <button class="quick-btn" id="btn-sound-toggle"><span class="txt-full">🔊 サウンド: ON [M]</span><span
+            class="txt-mob">🔊 音</span></button>
+        <button class="quick-btn" id="btn-env-settings"><span class="txt-full">⚙ 環境設定 (朝/昼/夜・天気)</span><span
+            class="txt-mob">⚙ 設定</span></button>
+        <button class="quick-btn" id="btn-cam-view"><span class="txt-full" id="txt-cam-full">視点切替: 三人称チェイス
+            [C]</span><span class="txt-mob" id="txt-cam-mob">📷 視点</span></button>
+        <button class="quick-btn" id="btn-random-track-race"
+          style="background:linear-gradient(135deg, rgba(2,132,199,0.8), rgba(3,105,161,0.9)); color:#fff; border-color:#38bdf8;"><span
+            class="txt-full">🎲 新コース生成 [T]</span><span class="txt-mob">🎲 コース</span></button>
+        <button class="quick-btn" id="btn-auto-drive"><span class="txt-full" id="txt-auto-full">オートパイロット [P]</span><span
+            class="txt-mob" id="txt-auto-mob">🤖 自動</span></button>
+        <button class="quick-btn" id="btn-to-chapters"><span class="txt-full">コース選択へ戻る [ESC]</span><span
+            class="txt-mob">◀ コース</span></button>
       </div>
 
       <!-- Weather Precipitation Canvas & Lightning Flash -->
@@ -3701,29 +3921,29 @@
     // 1. 15-CHAPTER STORY DEFINITIONS (Matching Screenshot 2 Word-for-Word)
     // ============================================================================
     const CHAPTERS = [
-      { id: 1,  cond: '先にゴール',       title: '第01話 白山の挑戦者',       distKm: 10, course: '榛名山 / 下り (秋名下り)', featureTag: '🏁 秋名高速下り', featureKey: 'CLEAR_TOUGE', sky: 0x0b1320, fog: 0x0d1624, light: 0.45, line: '静かな峠に、二つのエンジン音。<br/>今夜、榛名の頂で新しい勝負が始まる。' },
-      { id: 2,  cond: '雨の下りを制覇',   title: '第02話 雨音のライン',       distKm: 12, course: '妙義山 / 雨の絶壁 (巨岩群)', featureTag: '🪨 巨岩絶壁', featureKey: 'CLIFFS', sky: 0x09111c, fog: 0x101c2b, light: 0.40, line: '濡れたアスファルトがヘッドライトを反射する。<br/>雨のダウンヒルで真のグリップを見極めろ。' },
-      { id: 3,  cond: '上りを制覇',       title: '第03話 頂へ続く道',         distKm: 14, course: '榛名山 / 上り (山岳トンネル)', featureTag: '🚇 山岳トンネル', featureKey: 'TUNNEL', sky: 0x0d1828, fog: 0x111f32, light: 0.50, line: 'ターボの咆哮が夜の谷間に響き渡る。<br/>パワー勝負のヒルクライムが始まる。' },
-      { id: 4,  cond: '雨の朝、決着',     title: '第04話 夜明け前の決着',     distKm: 16, course: '榛名山 / 黎明 (展望パーキング)', featureTag: '🏪 展望パーキング', featureKey: 'REST_AREA', sky: 0x162438, fog: 0x1e3048, light: 0.65, line: '群青に染まる夜明け前のワインディング。<br/>わずかなラインの狂いが勝敗を分ける。' },
-      { id: 5,  cond: '昼の下りを制覇',   title: '第05話 乾いた路面',         distKm: 18, course: '赤城山 / 白昼高原 (風力発電)', featureTag: '💨 風力発電', featureKey: 'WIND_TURBINES', sky: 0x3b6fa0, fog: 0x5c8ab5, light: 1.35, line: '乾いた路面に刻まれるブラックマーク。<br/>白昼のダウンヒルで限界速度に挑め。' },
-      { id: 6,  cond: '朝の上り、最終戦', title: '第06話 峠の約束',           distKm: 20, course: '碓氷峠 / 朝の峡谷 (トラス大鉄橋)', featureTag: '🌉 赤トラス大鉄橋', featureKey: 'TRUSS_BRIDGE', sky: 0x2c4868, fog: 0x3d5c7c, light: 1.05, line: '朝靄を切り裂く二つのシルエット。<br/>約束の頂へ向けてアクセルを踏み抜け。' },
-      { id: 7,  cond: '霧の下りを制覇',   title: '第07話 霧の見晴台',         distKm: 22, course: '妙義山 / 濃霧の奇岩 (覆道・奇岩)', featureTag: '🌫️ 濃霧覆道', featureKey: 'FOG_SHED', sky: 0x1e2936, fog: 0x2c3b4d, light: 0.55, line: '視界を奪う白い霧。<br/>五感と走行ラインだけを頼りにコーナーへ飛び込め。' },
-      { id: 8,  cond: '落葉の上り',       title: '第08話 落葉の連続コーナー', distKm: 24, course: '日光いろは坂 / 錦秋 (温泉宿場町)', featureTag: '⛩️ 温泉宿場町', featureKey: 'HOT_SPRING', sky: 0x261a18, fog: 0x382520, light: 0.75, line: '舞い散る落葉がスリップを誘う。<br/>リズムを崩さず連続ヘアピンを攻略せよ。' },
-      { id: 9,  cond: '雨の稜線',         title: '第09話 雨だれの稜線',       distKm: 26, course: '八方ヶ原 / 暴風雨 (嵐の鉄橋)', featureTag: '⚡ 嵐の鉄橋', featureKey: 'STORM_BRIDGE', sky: 0x0a1320, fog: 0x122030, light: 0.42, line: '豪雨の稜線バトル。<br/>R32のアテーサE-TSに食らいつけ！' },
-      { id: 10, cond: '夕焼けの上り',     title: '第10話 夕焼けの追走',       distKm: 28, course: '箱根ターンパイク / 夕暮れ (夕陽の風車)', featureTag: '🌅 夕陽の風車', featureKey: 'SUNSET_WINDMILL', sky: 0x3d1e1e, fog: 0x542b24, light: 0.90, line: '茜色に染まるガードレール。<br/>先行する相沢のテールランプを捉えろ。' },
-      { id: 11, cond: '湖畔の夜戦',       title: '第11話 湖畔のナイトラン',   distKm: 30, course: '榛名湖 / レイクサイド (水上トラス橋)', featureTag: '🌊 水上トラス橋', featureKey: 'LAKESIDE_BRIDGE', sky: 0x070d18, fog: 0x0b1524, light: 0.45, line: '静まり返った湖畔の高速セクション。<br/>スリップストリームから一気に抜き去れ。' },
-      { id: 12, cond: '凍てつく朝',       title: '第12話 凍てつく朝',         distKm: 32, course: '志賀草津道路 / 厳冬 (雪の回廊)', featureTag: '❄️ 豪雪・雪の回廊', featureKey: 'SNOW_WALLS', sky: 0x1b2c40, fog: 0x263c54, light: 0.80, line: '氷点下の張り詰めた空気。<br/>繊細なステアリングでマシンをコントロールせよ。' },
-      { id: 13, cond: '五連の先へ',       title: '第13話 五連の先へ',         distKm: 34, course: '榛名山 / 五連ヘアピン (ギャラリー)', featureTag: '🏁 ギャラリー五連', featureKey: 'FIVE_REST', sky: 0x080f1a, fog: 0x0d1726, light: 0.45, line: '名物・五連ヘアピン。<br/>溝落としとドリフトでインを突き抜けろ！' },
-      { id: 14, cond: '頂上決戦',         title: '第14話 頂上決戦',           distKm: 36, course: '榛名山 / 全線フルコース (複合)', featureTag: '🌟 複合クライマックス', featureKey: 'GRAND_TOUR', sky: 0x060b14, fog: 0x0a1220, light: 0.45, line: '持てるすべてのテクニックをぶつける頂上決戦。<br/>相沢蓮との最終バトルが始まる！' },
-      { id: 15, cond: '新たな挑戦者',     title: '第15話 新しいスタートライン', distKm: 38, course: '首都高・湾岸線 / 新章 (港湾工業)', featureTag: '🏭 港湾工業地帯', featureKey: 'INDUSTRIAL', sky: 0x142238, fog: 0x1c304c, light: 0.70, line: '峠の伝説は新たなステージへ。<br/>最速の称号をその手に掴め！' }
+      { id: 1, cond: '先にゴール', title: '第01話 白山の挑戦者', distKm: 10, course: '榛名山 / 下り (秋名下り)', featureTag: '🏁 秋名高速下り', featureKey: 'CLEAR_TOUGE', sky: 0x0b1320, fog: 0x0d1624, light: 0.45, line: '静かな峠に、二つのエンジン音。<br/>今夜、榛名の頂で新しい勝負が始まる。' },
+      { id: 2, cond: '雨の下りを制覇', title: '第02話 雨音のライン', distKm: 12, course: '妙義山 / 雨の絶壁 (巨岩群)', featureTag: '🪨 巨岩絶壁', featureKey: 'CLIFFS', sky: 0x09111c, fog: 0x101c2b, light: 0.40, line: '濡れたアスファルトがヘッドライトを反射する。<br/>雨のダウンヒルで真のグリップを見極めろ。' },
+      { id: 3, cond: '上りを制覇', title: '第03話 頂へ続く道', distKm: 14, course: '榛名山 / 上り (山岳トンネル)', featureTag: '🚇 山岳トンネル', featureKey: 'TUNNEL', sky: 0x0d1828, fog: 0x111f32, light: 0.50, line: 'ターボの咆哮が夜の谷間に響き渡る。<br/>パワー勝負のヒルクライムが始まる。' },
+      { id: 4, cond: '雨の朝、決着', title: '第04話 夜明け前の決着', distKm: 16, course: '榛名山 / 黎明 (展望パーキング)', featureTag: '🏪 展望パーキング', featureKey: 'REST_AREA', sky: 0x162438, fog: 0x1e3048, light: 0.65, line: '群青に染まる夜明け前のワインディング。<br/>わずかなラインの狂いが勝敗を分ける。' },
+      { id: 5, cond: '昼の下りを制覇', title: '第05話 乾いた路面', distKm: 18, course: '赤城山 / 白昼高原 (風力発電)', featureTag: '💨 風力発電', featureKey: 'WIND_TURBINES', sky: 0x3b6fa0, fog: 0x5c8ab5, light: 1.35, line: '乾いた路面に刻まれるブラックマーク。<br/>白昼のダウンヒルで限界速度に挑め。' },
+      { id: 6, cond: '朝の上り、最終戦', title: '第06話 峠の約束', distKm: 20, course: '碓氷峠 / 朝の峡谷 (トラス大鉄橋)', featureTag: '🌉 赤トラス大鉄橋', featureKey: 'TRUSS_BRIDGE', sky: 0x2c4868, fog: 0x3d5c7c, light: 1.05, line: '朝靄を切り裂く二つのシルエット。<br/>約束の頂へ向けてアクセルを踏み抜け。' },
+      { id: 7, cond: '霧の下りを制覇', title: '第07話 霧の見晴台', distKm: 22, course: '妙義山 / 濃霧の奇岩 (覆道・奇岩)', featureTag: '🌫️ 濃霧覆道', featureKey: 'FOG_SHED', sky: 0x1e2936, fog: 0x2c3b4d, light: 0.55, line: '視界を奪う白い霧。<br/>五感と走行ラインだけを頼りにコーナーへ飛び込め。' },
+      { id: 8, cond: '落葉の上り', title: '第08話 落葉の連続コーナー', distKm: 24, course: '日光いろは坂 / 錦秋 (温泉宿場町)', featureTag: '⛩️ 温泉宿場町', featureKey: 'HOT_SPRING', sky: 0x261a18, fog: 0x382520, light: 0.75, line: '舞い散る落葉がスリップを誘う。<br/>リズムを崩さず連続ヘアピンを攻略せよ。' },
+      { id: 9, cond: '雨の稜線', title: '第09話 雨だれの稜線', distKm: 26, course: '八方ヶ原 / 暴風雨 (嵐の鉄橋)', featureTag: '⚡ 嵐の鉄橋', featureKey: 'STORM_BRIDGE', sky: 0x0a1320, fog: 0x122030, light: 0.42, line: '豪雨の稜線バトル。<br/>R32のアテーサE-TSに食らいつけ！' },
+      { id: 10, cond: '夕焼けの上り', title: '第10話 夕焼けの追走', distKm: 28, course: '箱根ターンパイク / 夕暮れ (夕陽の風車)', featureTag: '🌅 夕陽の風車', featureKey: 'SUNSET_WINDMILL', sky: 0x3d1e1e, fog: 0x542b24, light: 0.90, line: '茜色に染まるガードレール。<br/>先行する相沢のテールランプを捉えろ。' },
+      { id: 11, cond: '湖畔の夜戦', title: '第11話 湖畔のナイトラン', distKm: 30, course: '榛名湖 / レイクサイド (水上トラス橋)', featureTag: '🌊 水上トラス橋', featureKey: 'LAKESIDE_BRIDGE', sky: 0x070d18, fog: 0x0b1524, light: 0.45, line: '静まり返った湖畔の高速セクション。<br/>スリップストリームから一気に抜き去れ。' },
+      { id: 12, cond: '凍てつく朝', title: '第12話 凍てつく朝', distKm: 32, course: '志賀草津道路 / 厳冬 (雪の回廊)', featureTag: '❄️ 豪雪・雪の回廊', featureKey: 'SNOW_WALLS', sky: 0x1b2c40, fog: 0x263c54, light: 0.80, line: '氷点下の張り詰めた空気。<br/>繊細なステアリングでマシンをコントロールせよ。' },
+      { id: 13, cond: '五連の先へ', title: '第13話 五連の先へ', distKm: 34, course: '榛名山 / 五連ヘアピン (ギャラリー)', featureTag: '🏁 ギャラリー五連', featureKey: 'FIVE_REST', sky: 0x080f1a, fog: 0x0d1726, light: 0.45, line: '名物・五連ヘアピン。<br/>溝落としとドリフトでインを突き抜けろ！' },
+      { id: 14, cond: '頂上決戦', title: '第14話 頂上決戦', distKm: 36, course: '榛名山 / 全線フルコース (複合)', featureTag: '🌟 複合クライマックス', featureKey: 'GRAND_TOUR', sky: 0x060b14, fog: 0x0a1220, light: 0.45, line: '持てるすべてのテクニックをぶつける頂上決戦。<br/>相沢蓮との最終バトルが始まる！' },
+      { id: 15, cond: '新たな挑戦者', title: '第15話 新しいスタートライン', distKm: 38, course: '首都高・湾岸線 / 新章 (港湾工業)', featureTag: '🏭 港湾工業地帯', featureKey: 'INDUSTRIAL', sky: 0x142238, fog: 0x1c304c, light: 0.70, line: '峠の伝説は新たなステージへ。<br/>最速の称号をその手に掴め！' }
     ];
 
     const CAR_SPECS = {
       AE86: { code: 'AE86', maker: 'トヨタ / AE86', modelLabel: 'TRUENO / AE86', nodeName: 'Car_AE86', colorHex: '#f5f7fa' },
-      R32:  { code: 'R32',  maker: '日産 / R32',   modelLabel: 'GT-R / R32',    nodeName: 'Car_R32',  colorHex: '#4b525c' },
-      RX7:  { code: 'RX7',  maker: 'マツダ / RX-7', modelLabel: 'RX-7 / FD3S',   nodeName: 'Car_RX7',  colorHex: '#f5b800' },
-      EK9:  { code: 'EK9',  maker: 'ホンダ / シビック', modelLabel: 'CIVIC / EK9',   nodeName: 'Car_EK9',  colorHex: '#f0f3f6' },
-      GC8:  { code: 'GC8',  maker: 'スバル / インプレッサ', modelLabel: 'IMPREZA / GC8', nodeName: 'Car_GC8',  colorHex: '#1248a8' }
+      R32: { code: 'R32', maker: '日産 / R32', modelLabel: 'GT-R / R32', nodeName: 'Car_R32', colorHex: '#4b525c' },
+      RX7: { code: 'RX7', maker: 'マツダ / RX-7', modelLabel: 'RX-7 / FD3S', nodeName: 'Car_RX7', colorHex: '#f5b800' },
+      EK9: { code: 'EK9', maker: 'ホンダ / シビック', modelLabel: 'CIVIC / EK9', nodeName: 'Car_EK9', colorHex: '#f0f3f6' },
+      GC8: { code: 'GC8', maker: 'スバル / インプレッサ', modelLabel: 'IMPREZA / GC8', nodeName: 'Car_GC8', colorHex: '#1248a8' }
     };
 
     // ============================================================================
@@ -3752,7 +3972,7 @@
       }
     };
 
-    
+
     // ============================================================================
     // CHARACTER & AVATAR SELECTION ENGINE (5 DRIVERS & 4 AVATAR STYLES)
     // ============================================================================
@@ -3931,46 +4151,46 @@
       if (hudName) hudName.textContent = char.name;
     }
 
-// ============================================================================
+    // ============================================================================
     // 2.8. LIVE CHARACTER FACIAL RIG (Blinking 瞬き & Lip-Sync 口パク Engine)
     // ============================================================================
     const FACE_LANDMARKS = {
       takumi: {
-        leftEye:  { x: 0.422, y: 0.354, rx: 0.044, ry: 0.024 },
+        leftEye: { x: 0.422, y: 0.354, rx: 0.044, ry: 0.024 },
         rightEye: { x: 0.563, y: 0.354, rx: 0.044, ry: 0.024 },
-        mouth:    { x: 0.500, y: 0.512, rx: 0.036, ry: 0.015 },
+        mouth: { x: 0.500, y: 0.512, rx: 0.036, ry: 0.015 },
         skinTone: '#cb9f86',
         skinDark: '#a77660',
         lipColor: '#4f1a20'
       },
       bunta: {
-        leftEye:  { x: 0.431, y: 0.370, rx: 0.042, ry: 0.022 },
+        leftEye: { x: 0.431, y: 0.370, rx: 0.042, ry: 0.022 },
         rightEye: { x: 0.551, y: 0.374, rx: 0.042, ry: 0.022 },
-        mouth:    { x: 0.500, y: 0.510, rx: 0.040, ry: 0.015 },
+        mouth: { x: 0.500, y: 0.510, rx: 0.040, ry: 0.015 },
         skinTone: '#bd8c74',
         skinDark: '#94624b',
         lipColor: '#4a1b1b'
       },
       mogi: {
-        leftEye:  { x: 0.421, y: 0.355, rx: 0.046, ry: 0.028 },
+        leftEye: { x: 0.421, y: 0.355, rx: 0.046, ry: 0.028 },
         rightEye: { x: 0.572, y: 0.355, rx: 0.046, ry: 0.028 },
-        mouth:    { x: 0.500, y: 0.492, rx: 0.034, ry: 0.014 },
+        mouth: { x: 0.500, y: 0.492, rx: 0.034, ry: 0.014 },
         skinTone: '#efc6b0',
         skinDark: '#d19980',
         lipColor: '#b44b56'
       },
       ryosuke: {
-        leftEye:  { x: 0.396, y: 0.351, rx: 0.046, ry: 0.024 },
+        leftEye: { x: 0.396, y: 0.351, rx: 0.046, ry: 0.024 },
         rightEye: { x: 0.608, y: 0.367, rx: 0.046, ry: 0.024 },
-        mouth:    { x: 0.493, y: 0.495, rx: 0.034, ry: 0.014 },
+        mouth: { x: 0.493, y: 0.495, rx: 0.034, ry: 0.014 },
         skinTone: '#e5bfab',
         skinDark: '#c09279',
         lipColor: '#522026'
       },
       keisuke: {
-        leftEye:  { x: 0.430, y: 0.377, rx: 0.044, ry: 0.024 },
+        leftEye: { x: 0.430, y: 0.377, rx: 0.044, ry: 0.024 },
         rightEye: { x: 0.578, y: 0.367, rx: 0.044, ry: 0.024 },
-        mouth:    { x: 0.485, y: 0.585, rx: 0.038, ry: 0.015 },
+        mouth: { x: 0.485, y: 0.585, rx: 0.038, ry: 0.015 },
         skinTone: '#d9a68a',
         skinDark: '#b27b60',
         lipColor: '#542224'
@@ -4262,7 +4482,7 @@
         faceSlots.intro.charKey = rivalKey;
         faceSlots.rivalHud.charKey = rivalKey;
       }
-      
+
       const introImg = document.getElementById('intro-char-img');
       if (introImg) introImg.src = rival.bustSrc;
       const introBtm = document.getElementById('intro-bottom-text');
@@ -4744,10 +4964,10 @@
 
     const CAR_PLATE_CONFIGS = {
       Car_AE86: { area: '群馬', classNum: '55', kana: 'お', num: '13-954', isYellow: false },
-      Car_R32:  { area: '群馬', classNum: '33', kana: 'ぬ', num: '37-564', isYellow: false },
-      Car_RX7:  { area: '群馬', classNum: '58', kana: 'け', num: '71-268', isYellow: false },
-      Car_EK9:  { area: '栃',   classNum: '58', kana: 'さ', num: '86-596', isYellow: false },
-      Car_GC8:  { area: '群馬', classNum: '52', kana: 'が', num: '22-108', isYellow: false }
+      Car_R32: { area: '群馬', classNum: '33', kana: 'ぬ', num: '37-564', isYellow: false },
+      Car_RX7: { area: '群馬', classNum: '58', kana: 'け', num: '71-268', isYellow: false },
+      Car_EK9: { area: '栃', classNum: '58', kana: 'さ', num: '86-596', isYellow: false },
+      Car_GC8: { area: '群馬', classNum: '52', kana: 'が', num: '22-108', isYellow: false }
     };
 
     // Detailed Model-Specific Rear Dimensions & Coordinates
@@ -5151,7 +5371,7 @@
         child.receiveShadow = true;
 
         // Hide GLTF's built-in low-res license plate and flat taillights so our sculpted 3D assemblies take over
-        const mNames = Array.isArray(child.material) ? child.material.map(m=>m ? m.name : '') : [child.material ? child.material.name : ''];
+        const mNames = Array.isArray(child.material) ? child.material.map(m => m ? m.name : '') : [child.material ? child.material.name : ''];
         if (mNames.some(n => n.includes('Plate_White') || n === 'Plate_White')) {
           child.visible = false;
           return;
@@ -5263,7 +5483,7 @@
 
       // C. Authentic Japanese JDM Front & Rear License Plates
       const plateFrontTex = createJdmPlateTexture({ ...cfg, isRear: false });
-      const plateRearTex  = createJdmPlateTexture({ ...cfg, isRear: true });
+      const plateRearTex = createJdmPlateTexture({ ...cfg, isRear: true });
 
       const plateGeo = new THREE.BoxGeometry(0.33, 0.165, 0.008);
       const plateMatF = new THREE.MeshStandardMaterial({ map: plateFrontTex, roughness: 0.35, metalness: 0.15 });
@@ -5334,9 +5554,9 @@
       });
 
       const caliperColor = (carName === 'Car_EK9') ? 0xd61515 :
-                           (carName === 'Car_GC8') ? 0xd4a017 :
-                           (carName === 'Car_RX7') ? 0xcc1818 :
-                           (carName === 'Car_R32') ? 0x3d434d : 0x22262c;
+        (carName === 'Car_GC8') ? 0xd4a017 :
+          (carName === 'Car_RX7') ? 0xcc1818 :
+            (carName === 'Car_R32') ? 0x3d434d : 0x22262c;
       const caliperGeo = new THREE.BoxGeometry(0.045, 0.09, 0.12);
       const caliperMat = new THREE.MeshStandardMaterial({
         color: caliperColor,
@@ -5915,7 +6135,7 @@
     // Build Showroom Lake & Turntable (Matching Screenshot 3)
     // carTemplates declared above
     let showroomCarMesh = null;
-    let updateShowroomForest = () => {};
+    let updateShowroomForest = () => { };
 
     function buildShowroomScene() {
       // Asphalt scenic overlook platform
@@ -6563,21 +6783,21 @@
       // Layer 1: Foreground High-Detail Hero Trees (Behind Guardrail, Z: -5.8m to -10.5m)
       const heroPositions = [
         { x: -24.5, z: -6.8, type: 'cedar', h: 12.5, r: 0.42 },
-        { x: -21.2, z: -7.6, type: 'pine',  h: 9.8,  r: 0.35 },
+        { x: -21.2, z: -7.6, type: 'pine', h: 9.8, r: 0.35 },
         { x: -18.0, z: -6.4, type: 'cedar', h: 13.5, r: 0.45 },
         { x: -14.6, z: -8.2, type: 'cedar', h: 11.2, r: 0.38 },
-        { x: -11.5, z: -6.9, type: 'pine',  h: 10.4, r: 0.36 },
-        { x:  -8.2, z: -7.5, type: 'cedar', h: 14.0, r: 0.46 },
-        { x:  -5.0, z: -6.2, type: 'cedar', h: 12.0, r: 0.40 },
-        { x:  -1.8, z: -8.0, type: 'pine',  h: 10.2, r: 0.34 },
-        { x:   1.5, z: -6.5, type: 'cedar', h: 13.2, r: 0.44 },
-        { x:   4.8, z: -7.4, type: 'cedar', h: 11.8, r: 0.39 },
-        { x:   8.2, z: -6.6, type: 'pine',  h: 10.8, r: 0.36 },
-        { x:  11.5, z: -7.8, type: 'cedar', h: 14.2, r: 0.48 },
-        { x:  14.8, z: -6.4, type: 'cedar', h: 12.4, r: 0.41 },
-        { x:  18.2, z: -7.9, type: 'pine',  h: 9.6,  r: 0.33 },
-        { x:  21.5, z: -6.5, type: 'cedar', h: 13.0, r: 0.43 },
-        { x:  24.8, z: -7.5, type: 'cedar', h: 11.5, r: 0.38 }
+        { x: -11.5, z: -6.9, type: 'pine', h: 10.4, r: 0.36 },
+        { x: -8.2, z: -7.5, type: 'cedar', h: 14.0, r: 0.46 },
+        { x: -5.0, z: -6.2, type: 'cedar', h: 12.0, r: 0.40 },
+        { x: -1.8, z: -8.0, type: 'pine', h: 10.2, r: 0.34 },
+        { x: 1.5, z: -6.5, type: 'cedar', h: 13.2, r: 0.44 },
+        { x: 4.8, z: -7.4, type: 'cedar', h: 11.8, r: 0.39 },
+        { x: 8.2, z: -6.6, type: 'pine', h: 10.8, r: 0.36 },
+        { x: 11.5, z: -7.8, type: 'cedar', h: 14.2, r: 0.48 },
+        { x: 14.8, z: -6.4, type: 'cedar', h: 12.4, r: 0.41 },
+        { x: 18.2, z: -7.9, type: 'pine', h: 9.6, r: 0.33 },
+        { x: 21.5, z: -6.5, type: 'cedar', h: 13.0, r: 0.43 },
+        { x: 24.8, z: -7.5, type: 'cedar', h: 11.5, r: 0.38 }
       ];
 
       heroPositions.forEach((pos, i) => {
@@ -6670,7 +6890,7 @@
       }
 
       // Real-time Botanical Forest Sway & Drift Updater
-      updateShowroomForest = function(dt, time) {
+      updateShowroomForest = function (dt, time) {
         // Wind sway harmonic oscillation
         showroomForestTrees.forEach((tree) => {
           const ud = tree.userData;
@@ -7028,7 +7248,7 @@
       return tex;
     }
 
-    
+
     // ============================================================================
     // PROCEDURAL 3D TOUGE TRACK ENGINE (9 FIELD ARCHETYPES & RANDOM GENERATION)
     // ============================================================================
@@ -9040,7 +9260,7 @@
       }
     ];
 
-    
+
     // ============================================================================
     // 7.7. DYNAMIC COURSE SWITCHING & RANDOM GENERATION
     // ============================================================================
@@ -9208,7 +9428,7 @@
       if (badgeEl) badgeEl.textContent = `STAGE ${String(chIdx + 1).padStart(2, '0')} / 15`;
       const diffEl = document.getElementById('course-spec-diff-val');
       if (diffEl) diffEl.textContent = c.difficulty;
-      
+
       const statusBadge = document.getElementById('stage-status-badge-val');
       const isCleared = clearedChapters.has(chIdx);
       if (statusBadge) {
@@ -9665,7 +9885,7 @@
       initWeatherParticles();
     }
 
-// Weather Canvas Particle System (Raindrops, Snowflakes, Storm Splashes & Lightning)
+    // Weather Canvas Particle System (Raindrops, Snowflakes, Storm Splashes & Lightning)
     const weatherCanvas = document.getElementById('weather-canvas');
     const weatherCtx = weatherCanvas.getContext('2d');
     const lightningEl = document.getElementById('lightning-flash');
@@ -9715,7 +9935,7 @@
           { y: -16, len: 12, a: Math.PI / 4, w: 1.8 },
           { y: -28, len: 16, a: Math.PI / 3.8, w: 1.6 },
           { y: -38, len: 10, a: Math.PI / 3.5, w: 1.2 },
-          { y: -44, len: 5,  a: Math.PI / 3.2, w: 1.0 }
+          { y: -44, len: 5, a: Math.PI / 3.2, w: 1.0 }
         ];
         branches.forEach(b => {
           dctx.lineWidth = b.w;
@@ -10189,7 +10409,7 @@
       weatherCtx.clearRect(W * 0.5 - 280, H - 60, 560, 60);
     }
 
-function startStoryIntro(chapterIdx) {
+    function startStoryIntro(chapterIdx) {
       selectedChapterIdx = chapterIdx;
       applyChapterCourse(chapterIdx);
       applyChapterScenery(chapterIdx);
@@ -10534,12 +10754,12 @@ function startStoryIntro(chapterIdx) {
     const keys = { up: false, down: false, left: false, right: false, drift: false };
 
     const CAMERA_MODES = [
-      { id: 'CHASE',     label: '三人称チェイス [C / 1]',     hudName: '三人称チェイス (CHASE)',         fov: 60 },
-      { id: 'CHASE_FAR', label: '三人称ワイド [C / 2]',       hudName: '三人称ワイド (CHASE FAR)',       fov: 64 },
-      { id: 'HOOD',      label: 'ボンネット視点 [C / 3]',     hudName: 'ボンネット視点 (HOOD)',          fov: 65 },
-      { id: 'COCKPIT',   label: 'コックピット [C / 4]',       hudName: 'コックピット視点 (COCKPIT)',      fov: 68 },
-      { id: 'BUMPER',    label: 'バンパー視点 [C / 5]',       hudName: 'バンパー視点 (BUMPER)',          fov: 72 },
-      { id: 'HELI',      label: '空撮ドローン [C / 6]',       hudName: '空撮ドローン視点 (HELI/DRONE)',   fov: 52 }
+      { id: 'CHASE', label: '三人称チェイス [C / 1]', hudName: '三人称チェイス (CHASE)', fov: 60 },
+      { id: 'CHASE_FAR', label: '三人称ワイド [C / 2]', hudName: '三人称ワイド (CHASE FAR)', fov: 64 },
+      { id: 'HOOD', label: 'ボンネット視点 [C / 3]', hudName: 'ボンネット視点 (HOOD)', fov: 65 },
+      { id: 'COCKPIT', label: 'コックピット [C / 4]', hudName: 'コックピット視点 (COCKPIT)', fov: 68 },
+      { id: 'BUMPER', label: 'バンパー視点 [C / 5]', hudName: 'バンパー視点 (BUMPER)', fov: 72 },
+      { id: 'HELI', label: '空撮ドローン [C / 6]', hudName: '空撮ドローン視点 (HELI/DRONE)', fov: 52 }
     ];
 
     function setCameraMode(idx) {
@@ -11015,7 +11235,7 @@ function startStoryIntro(chapterIdx) {
         document.getElementById('res-title').textContent = playerWon ? 'WIN!! 勝利' : 'LOSE... 敗北';
         document.getElementById('res-title').style.color = playerWon ? '#f7b928' : '#38bdf8';
         document.getElementById('res-stats').innerHTML =
-          `走破タイム: ${ battle.elapsed.toFixed(2) } 秒<br/>相沢 蓮との差: ${ finalGapM > 0 ? '+' + finalGapM : finalGapM } m`;
+          `走破タイム: ${battle.elapsed.toFixed(2)} 秒<br/>相沢 蓮との差: ${finalGapM > 0 ? '+' + finalGapM : finalGapM} m`;
         document.getElementById('touge-result-modal').classList.add('visible');
       }
 
@@ -12119,4 +12339,5 @@ function startStoryIntro(chapterIdx) {
     });
   </script>
 </body>
+
 </html>
