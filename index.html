@@ -3701,7 +3701,7 @@
     // 1. 15-CHAPTER STORY DEFINITIONS (Matching Screenshot 2 Word-for-Word)
     // ============================================================================
     const CHAPTERS = [
-      { id: 1,  cond: '先にゴール',       title: '第01話 白山の挑戦者',       distKm: 10, course: '榛名山 / 下り (スノーシェッド)', featureTag: '🛡️ 落石覆工', featureKey: 'SNOW_SHED', sky: 0x0b1320, fog: 0x0d1624, light: 0.45, line: '静かな峠に、二つのエンジン音。<br/>今夜、榛名の頂で新しい勝負が始まる。' },
+      { id: 1,  cond: '先にゴール',       title: '第01話 白山の挑戦者',       distKm: 10, course: '榛名山 / 下り (秋名下り)', featureTag: '🏁 秋名高速下り', featureKey: 'CLEAR_TOUGE', sky: 0x0b1320, fog: 0x0d1624, light: 0.45, line: '静かな峠に、二つのエンジン音。<br/>今夜、榛名の頂で新しい勝負が始まる。' },
       { id: 2,  cond: '雨の下りを制覇',   title: '第02話 雨音のライン',       distKm: 12, course: '妙義山 / 雨の絶壁 (巨岩群)', featureTag: '🪨 巨岩絶壁', featureKey: 'CLIFFS', sky: 0x09111c, fog: 0x101c2b, light: 0.40, line: '濡れたアスファルトがヘッドライトを反射する。<br/>雨のダウンヒルで真のグリップを見極めろ。' },
       { id: 3,  cond: '上りを制覇',       title: '第03話 頂へ続く道',         distKm: 14, course: '榛名山 / 上り (山岳トンネル)', featureTag: '🚇 山岳トンネル', featureKey: 'TUNNEL', sky: 0x0d1828, fog: 0x111f32, light: 0.50, line: 'ターボの咆哮が夜の谷間に響き渡る。<br/>パワー勝負のヒルクライムが始まる。' },
       { id: 4,  cond: '雨の朝、決着',     title: '第04話 夜明け前の決着',     distKm: 16, course: '榛名山 / 黎明 (展望パーキング)', featureTag: '🏪 展望パーキング', featureKey: 'REST_AREA', sky: 0x162438, fog: 0x1e3048, light: 0.65, line: '群青に染まる夜明け前のワインディング。<br/>わずかなラインの狂いが勝敗を分ける。' },
@@ -8383,11 +8383,14 @@
       worldBeaconLights = [];
 
       const ch = CHAPTERS[chapterIdx] || CHAPTERS[0];
-      const fType = ch.featureKey || 'SNOW_SHED';
+      const fType = ch.featureKey || 'CLEAR_TOUGE';
 
       switch (fType) {
+        case 'CLEAR_TOUGE':
+          // Chapter 1: Pure classic Haruna/Akina night downhill pass without blocking structures
+          break;
         case 'SNOW_SHED':
-          buildSnowShed(worldFeaturesGroup, total * 0.16, 120);
+          buildSnowShed(worldFeaturesGroup, total * 0.28, 110);
           break;
         case 'CLIFFS':
           buildRockyCliffs(worldFeaturesGroup, total * 0.18, 140);
@@ -9069,7 +9072,7 @@
         distStr: '10.0 km',
         difficulty: '★★★☆☆',
         badge: 'COURSE 01 / 群馬',
-        features: '名物5連ヘアピン / 落石覆工スノーシェッド / 展望パーキング',
+        features: '名物5連ヘアピン / 連続高速S字 / 展望パーキング',
         desc: '低中速ヘアピンが連続する伝説のダウンヒル。側溝を使った溝落としと過激なドリフトが試される走り屋の聖地。',
         chapterIdx: 0,
         chapters: [0, 2, 3, 10, 12, 13],
